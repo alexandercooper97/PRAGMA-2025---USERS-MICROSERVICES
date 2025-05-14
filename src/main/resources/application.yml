@@ -1,0 +1,35 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-service
+  
+  datasource:
+    url: jdbc:mysql://localhost:33051/users
+    username: cooper
+    password: cooper
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  
+  cloud:
+    config:
+      username: root
+      password: s3cr3t
+      profile: dev
+
+appDescription: "Pragma User Service Powerup"
+appVersion: "1.0.0"
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8086/eureka/
+  instance:
+    hostname: localhost
+
+jwt:
+  secret: PragmaJWT
