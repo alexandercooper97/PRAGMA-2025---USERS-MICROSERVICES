@@ -1,0 +1,81 @@
+plugins {
+	id 'org.springframework.boot' version '3.3.11'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id 'java'
+	id 'jacoco'
+}
+
+group = 'com.pragma.powerup'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	mapstructVersion = "1.5.5.Final"
+	lombokVersion = "1.18.32"
+	lombokMapstructBindingVersion = "0.2.0"
+	mySqlConnectorVersion = "8.4.0"
+	openApiVersion = "2.5.0"
+	hamcrestVersion = "2.2"
+	springCloudVersion = "2023.0.1"
+	jsonWebTokenVersion = "0.11.5"
+	twilioVersion = "9.9.0"
+}
+
+dependencies {
+	// Spring Boot
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation "org.springframework.boot:spring-boot-starter-validation"
+	implementation "org.springframework.boot:spring-boot-starter-web"
+	implementation "org.springframework.boot:spring-boot-starter-security"
+	developmentOnly "org.springframework.boot:spring-boot-devtools"
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
+	testImplementation "org.springframework.security:spring-security-test"
+
+	// Spring Cloud
+	implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+	implementation "org.springframework.cloud:spring-cloud-starter-bootstrap"
+	implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+
+	// JWT
+	implementation "io.jsonwebtoken:jjwt-api:${jsonWebTokenVersion}"
+	runtimeOnly "io.jsonwebtoken:jjwt-impl:${jsonWebTokenVersion}"
+	runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jsonWebTokenVersion}"
+
+	// MySQL
+	runtimeOnly "com.mysql:mysql-connector-j:${mySqlConnectorVersion}"
+
+	// MapStruct + Lombok
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+
+	// SpringDoc OpenAPI (compatible con Boot 3.x)
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openApiVersion}"
+
+	// Hamcrest para pruebas
+	testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+test {
+	finalizedBy jacocoTestReport
+}
